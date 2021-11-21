@@ -10,15 +10,22 @@ let priceProduct = document.getElementById("price");
 let descriptionProduct = document.getElementById("description");
 let colorsProduct = document.getElementById("colors");
 
+
+//Récupération de l'article grace a l'id + affichage des données de ce dernier
 getArticle();
+
+//
+let addToCartBtn = document.getElementById("addToCart");
+addToCartBtn.addEventListener("click", () => {
+    addToCart();
+});
+
 
 //Récupération de l'article grace a l'id + affichage des données de ce dernier
 async function getArticle() {
      await fetch("http://localhost:3000/api/products/" + idProduct)
     .then((response) => response.json())    
     .then(product => {
-        console.log(product);
-
         img.setAttribute("src", product.imageUrl);
         img.setAttribute("alt", product.altTxt);    
         titleProduct.innerHTML = product.name;
@@ -32,4 +39,29 @@ async function getArticle() {
             colorsProduct.appendChild(color);
         }  
     });          
+}
+
+
+function addToCart() {
+
+    let idKanap = idProduct;
+    let colorKanap = document.querySelector("#colors").value;
+    let qtyKanap = document.querySelector("#quantity").value;
+    
+    console.log(colorKanap, idKanap, qtyKanap);
+
+    let productCart = {
+        idKanap : idProduct,
+        colorKanap : colorKanap,
+        qtyKanap  : qtyKanap
+    };
+
+
+    console.log(productCart);
+
+    let objCart = JSON.stringify(productCart);
+    localStorage.setItem("cart", objCart);
+
+
+    alert("Ajouté au panier !");
 }
