@@ -31,6 +31,7 @@ async function getArticle() {
         titleProduct.innerHTML = product.name;
         priceProduct.innerHTML = product.price;
         descriptionProduct.innerHTML = product.description;
+        document.title = product.name;
 
         for (let i=0; i < product.colors.length; i++) {
             let color = document.createElement("option");
@@ -44,24 +45,30 @@ async function getArticle() {
 
 function addToCart() {
 
-    let idKanap = idProduct;
-    let colorKanap = document.querySelector("#colors").value;
-    let qtyKanap = document.querySelector("#quantity").value;
-    
-    console.log(colorKanap, idKanap, qtyKanap);
+    if (localStorage.getItem("cart")) {
+     
+        let cart = localStorage.getItem("cart");
+        console.log(cart);
 
-    let productCart = {
-        idKanap : idProduct,
-        colorKanap : colorKanap,
-        qtyKanap  : qtyKanap
-    };
+    } else {
 
+        let idKanap = idProduct;
+        let colorKanap = document.querySelector("#colors").value;
+        let qtyKanap = document.querySelector("#quantity").value;
+        
+        console.log(colorKanap, idKanap, qtyKanap);
 
-    console.log(productCart);
+        let productCart = {
+            idKanap : idProduct,
+            colorKanap : colorKanap,
+            qtyKanap  : qtyKanap
+        };
 
-    let objCart = JSON.stringify(productCart);
-    localStorage.setItem("cart", objCart);
+        console.log(productCart);
 
+        let objCart = JSON.stringify(productCart);
+        localStorage.setItem("cart", objCart);
 
-    alert("Ajouté au panier !");
+        alert("Ajouté au panier !");
+    }
 }
