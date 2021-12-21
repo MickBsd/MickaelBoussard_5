@@ -48,20 +48,27 @@ function addToCart() {
     if (localStorage.getItem("cart")) {
      
         let cart = localStorage.getItem("cart");
-        console.log(cart);
 
     } else {
 
         let idKanap = idProduct;
+        let nameKanap = document.querySelector("#title").textContent;
         let colorKanap = document.querySelector("#colors").value;
         let qtyKanap = document.querySelector("#quantity").value;
+        let imgKanap = img.src; 
+        let priceKanap = document.querySelector("#price").textContent;
         
-        console.log(colorKanap, idKanap, qtyKanap);
+        console.log(img);
+        console.table(idKanap, nameKanap, colorKanap, qtyKanap, imgKanap, priceKanap);
+
 
         let productCart = {
             idKanap : idProduct,
+            nameKanap : nameKanap,
             colorKanap : colorKanap,
-            qtyKanap  : qtyKanap
+            qtyKanap  : qtyKanap,
+            imgKanap : imgKanap,
+            priceKanap : priceKanap
         };
 
         console.log(productCart);
