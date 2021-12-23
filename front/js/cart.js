@@ -274,7 +274,7 @@ function postForm() {
       email : document.getElementById('email').value
     }
 
-    //Construction d'un array depuis le local storage
+    //Construction d'un array d'id depuis le local storage
     let products = [];
     for (let i = 0; i<productLocalStorage.length;i++) {
         products.push(productLocalStorage[i].idKanap);
