@@ -1,6 +1,4 @@
 let productLocalStorage = JSON.parse(localStorage.getItem("cart"));
-console.log(productLocalStorage);
-console.log(productLocalStorage.length);
 
 if (!productLocalStorage) {
 
@@ -11,13 +9,8 @@ if (!productLocalStorage) {
     sectionCart.style.display = "none";
 
 } else {
-    console.log("panier rempli");
 
     for (let i=0; i < productLocalStorage.length; i++) {
-
-        console.log(i);
-        console.log("product a i :");
-        console.log(productLocalStorage[i]);
 
         // Création de la balise "article" et insertion dans la section
         let productArticle = document.createElement("article");
@@ -99,26 +92,27 @@ if (!productLocalStorage) {
         productSupprimer.innerHTML = "Supprimer";
         productSupprimer.addEventListener("click", (e) => {
             e.preventDefault;
-            
-
-                // enregistrer l'id et la couleur séléctionnés par le bouton supprimer
+        
+            // enregistrer l'id et la couleur séléctionnés par le bouton supprimer
             let deleteId = productLocalStorage[i].idKanap;
-            console.log("id a delete :" + deleteId);
             let deleteColor = productLocalStorage[i].colorKanap;
-            console.log("colora delete :" + deleteColor);
 
             // filtrer l'élément cliqué par le bouton supprimer
-            // en respectant les conditions du callback
             productLocalStorage = productLocalStorage.filter( elt => elt.idKanap !== deleteId || elt.colorKanap !== deleteColor);
-            
+
             // envoyer les nouvelles données dans le localStorage
-            localStorage.setItem('cart', JSON.stringify(productLocalStorage));
+            localStorage.setItem('cart', JSON.stringify(productLocalStorage));               
 
             // avertir de la suppression et recharger la page
             alert('Votre article a bien été supprimé.');
-            window.location.href = "cart.html";
+            
+            //Si pas de produits dans le local storage on affiche que le panier est vide
+            if (productLocalStorage.length === 0) {
+                localStorage.clear();
+            }
+            //Refresh rapide de la page
+            location.reload();
         });
-
     }
 }
 
@@ -132,27 +126,186 @@ function getTotals(){
     for (var i = 0; i < myLength; ++i) {
         totalQtt += elemsQtt[i].valueAsNumber;
     }
-
+    
     let productTotalQuantity = document.getElementById('totalQuantity');
     productTotalQuantity.innerHTML = totalQtt;
-    console.log(totalQtt);
 
     // Récupération du prix total
     totalPrice = 0;
-
     for (var i = 0; i < myLength; ++i) {
         totalPrice += (elemsQtt[i].valueAsNumber * productLocalStorage[i].priceKanap);
     }
 
     let productTotalPrice = document.getElementById('totalPrice');
     productTotalPrice.innerHTML = totalPrice;
-    console.log(totalPrice);
 }
 getTotals();
 
 
+function modifyQtt() {
+    let qttModif = document.querySelectorAll(".itemQuantity");
 
+    for (let k= 0; k < qttModif.length; k++){
+        qttModif[k].addEventListener("change" , (event) => {
+            event.preventDefault();
+
+            //Selection de l'element à modifier en fonction de son id ET sa couleur
+            let quantityModif = productLocalStorage[k].qtyKanap;
+            let qttModifValue = qttModif[k].valueAsNumber;
+            
+            const resultFind = productLocalStorage.find((el) => el.qttModifValue !== quantityModif);
+
+            resultFind.qtyKanap = qttModifValue;
+            productLocalStorage[k].qtyKanap = resultFind.qtyKanap;
+
+            localStorage.setItem("cart", JSON.stringify(productLocalStorage));
+        
+            // refresh rapide
+            location.reload();
+        })
+    }
+}
+modifyQtt();
+
+
+//Instauration formulaire avec regex
+function getForm() {
+    // Ajout des Regex
+    let form = document.querySelector(".cart__order__form");
+
+    //Création des expressions régulières
+    let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
+    let charRegExp = new RegExp("^[a-zA-Z ,.'-]+$");
+    let addressRegExp = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
+
+    // Ecoute de la modification du prénom
+    form.firstName.addEventListener('change', function() {
+        validFirstName(this);
+    });
+
+    // Ecoute de la modification du prénom
+    form.lastName.addEventListener('change', function() {
+        validLastName(this);
+    });
+
+    // Ecoute de la modification du prénom
+    form.address.addEventListener('change', function() {
+        validAddress(this);
+    });
+
+    // Ecoute de la modification du prénom
+    form.city.addEventListener('change', function() {
+        validCity(this);
+    });
+
+    // Ecoute de la modification du prénom
+    form.email.addEventListener('change', function() {
+        validEmail(this);
+    });
+
+    //validation du prénom
+    const validFirstName = function(inputFirstName) {
+        let firstNameErrorMsg = inputFirstName.nextElementSibling;
+
+        if (charRegExp.test(inputFirstName.value)) {
+            firstNameErrorMsg.innerHTML = '';
+        } else {
+            firstNameErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        }
+    };
+
+    //validation du nom
+    const validLastName = function(inputLastName) {
+        let lastNameErrorMsg = inputLastName.nextElementSibling;
+
+        if (charRegExp.test(inputLastName.value)) {
+            lastNameErrorMsg.innerHTML = '';
+        } else {
+            lastNameErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        }
+    };
+
+    //validation de l'adresse
+    const validAddress = function(inputAddress) {
+        let addressErrorMsg = inputAddress.nextElementSibling;
+
+        if (addressRegExp.test(inputAddress.value)) {
+            addressErrorMsg.innerHTML = '';
+        } else {
+            addressErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        }
+    };
+
+    //validation de la ville
+    const validCity = function(inputCity) {
+        let cityErrorMsg = inputCity.nextElementSibling;
+
+        if (charRegExp.test(inputCity.value)) {
+            cityErrorMsg.innerHTML = '';
+        } else {
+            cityErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        }
+    };
+
+    //validation de l'email
+    const validEmail = function(inputEmail) {
+        let emailErrorMsg = inputEmail.nextElementSibling;
+
+        if (emailRegExp.test(inputEmail.value)) {
+            emailErrorMsg.innerHTML = '';
+        } else {
+            emailErrorMsg.innerHTML = 'Veuillez renseigner votre email.';
+        }
+    };
+    }
+getForm();
 
 function postForm() {
+    const order = document.getElementById('order');
+    order.addEventListener('click', (event) => {
+    event.preventDefault();
+  
+    // je récupère les données du formulaire dans un objet
+    const contact = {
+      firstName : document.getElementById('firstName').value,
+      lastName : document.getElementById('lastName').value,
+      address : document.getElementById('address').value,
+      city : document.getElementById('city').value,
+      email : document.getElementById('email').value
+    }
 
-}
+    //Construction d'un array depuis le local storage
+    let products = [];
+    for (let i = 0; i<productLocalStorage.length;i++) {
+        products.push(productLocalStorage[i].idKanap);
+    }
+    console.log(products);
+  
+    // je mets les valeurs du formulaire et les produits sélectionnés
+    // dans un objet...
+    const sendFormData = {
+      contact,
+      products,
+    }
+  
+    // j'envoie le formulaire + localStorage (sendFormData) 
+    // ... que j'envoie au serveur
+  
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(sendFormData),
+      headers: { 
+        'Content-Type': 'application/json',
+      }
+    };
+  
+    fetch("http://localhost:3000/api/products/order", options)
+        .then(response => response.json())
+        .then(data => {
+        localStorage.setItem('orderId', data.orderId);
+        document.location.href = 'confirmation.html?id='+ data.orderId;
+      });
+  
+  }); // fin eventListener postForm
+  } // fin envoi du formulaire postForm
+  postForm();

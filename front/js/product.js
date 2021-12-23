@@ -42,70 +42,76 @@ addToCartBtn.addEventListener("click", addToCart);
 
 function addToCart() {
 
-    if (localStorage.getItem("cart")) {
-     
-        let productCart = JSON.parse(localStorage.getItem("cart"));
 
-        console.log(productCart);
+    const colorPicked = document. querySelector("#colors");
+    const quantityPicked = document.querySelector("#quantity");
 
-        let idKanap = idProduct;
-        let nameKanap = document.querySelector("#title").textContent;
-        let colorKanap = document.querySelector("#colors").value;
-        let qtyKanap = document.querySelector("#quantity").value;
-        let imgKanap = img.src; 
-        // let altImg = ;
-        let priceKanap = document.querySelector("#price").textContent;
+    if (quantityPicked.value > 0 && quantityPicked.value <=100 && quantityPicked.value != 0 && colorPicked.value != 0) { 
+
+        if (localStorage.getItem("cart")) {
         
-        console.log(img);
-        console.log(idKanap, nameKanap, colorKanap, qtyKanap, imgKanap, priceKanap);
-    
-        let productCartObj = {
-            idKanap : idProduct,
-            nameKanap : nameKanap,
-            colorKanap : colorKanap,
-            qtyKanap  : qtyKanap,
-            imgKanap : imgKanap,
-            priceKanap : priceKanap
-        };
-    
-        productCart.push(productCartObj);
-    
-        let objCart = JSON.stringify(productCart);
-        localStorage.setItem("cart", objCart);
-    
-        alert("Ajouté au panier !");
+            let productCart = JSON.parse(localStorage.getItem("cart"));
 
-    } else {
+            console.log(productCart);
 
-
-        let productCart = [];
-
-        let idKanap = idProduct;
-        let nameKanap = document.querySelector("#title").textContent;
-        let colorKanap = document.querySelector("#colors").value;
-        let qtyKanap = document.querySelector("#quantity").value;
-        let imgKanap = img.src; 
-        // let altImg = ;
-        let priceKanap = document.querySelector("#price").textContent;
+            let idKanap = idProduct;
+            let nameKanap = document.querySelector("#title").textContent;
+            let colorKanap = document.querySelector("#colors").value;
+            let qtyKanap = document.querySelector("#quantity").value;
+            let imgKanap = img.src; 
+            // let altImg = ;
+            let priceKanap = document.querySelector("#price").textContent;
+            
+            console.log(img);
+            console.log(idKanap, nameKanap, colorKanap, qtyKanap, imgKanap, priceKanap);
         
-        console.log(img);
-        console.log(idKanap, nameKanap, colorKanap, qtyKanap, imgKanap, priceKanap);
-    
-        let productCartObj = {
-            idKanap : idProduct,
-            nameKanap : nameKanap,
-            colorKanap : colorKanap,
-            qtyKanap  : qtyKanap,
-            imgKanap : imgKanap,
-            priceKanap : priceKanap
-        };
-    
-        productCart.push(productCartObj);
-    
-        let objCart = JSON.stringify(productCart);
-        localStorage.setItem("cart", objCart);
-    
-        alert("Ajouté au panier !");
-       
+            let productCartObj = {
+                idKanap : idProduct,
+                nameKanap : nameKanap,
+                colorKanap : colorKanap,
+                qtyKanap  : qtyKanap,
+                imgKanap : imgKanap,
+                priceKanap : priceKanap
+            };
+        
+            productCart.push(productCartObj);
+        
+            let objCart = JSON.stringify(productCart);
+            localStorage.setItem("cart", objCart);
+        
+            alert("Ajouté au panier !");
+
+        } else {
+
+
+            let productCart = [];
+
+            let idKanap = idProduct;
+            let nameKanap = document.querySelector("#title").textContent;
+            let colorKanap = document.querySelector("#colors").value;
+            let qtyKanap = document.querySelector("#quantity").value;
+            let imgKanap = img.src; 
+            // let altImg = ;
+            let priceKanap = document.querySelector("#price").textContent;
+            
+            console.log(img);
+            console.log(idKanap, nameKanap, colorKanap, qtyKanap, imgKanap, priceKanap);
+        
+            let productCartObj = {
+                idKanap : idProduct,
+                nameKanap : nameKanap,
+                colorKanap : colorKanap,
+                qtyKanap  : qtyKanap,
+                imgKanap : imgKanap,
+                priceKanap : priceKanap
+            };
+        
+            productCart.push(productCartObj);
+        
+            let objCart = JSON.stringify(productCart);
+            localStorage.setItem("cart", objCart);
+        
+            alert("Ajouté au panier !");    
+        }
     }
 }
